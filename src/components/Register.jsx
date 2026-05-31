@@ -5,13 +5,32 @@ export default function Register() {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [confirmPassword, setConfirmPassword] = useState('')
+    const [error, setError] = useState('')
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        if (password !== confirmPassword) {
-            alert('Las contraseñas no coinciden')
-            return
+
+        if (!email.trim() || !password.trim()) {
+        setError("Todos los campos son obligatorios");
+        alert("Todos los campos son obligatorios");
+        return;
         }
+
+        if (password.length < 6) {
+            setError("La contraseña debe tener al menos 6 caracteres");
+            alert("La contraseña debe tener al menos 6 caracteres");
+            return;
+        }
+
+        if (password !== confirmPassword) {
+            setError("Las contraseñas no coinciden");
+            alert("Las contraseñas no coinciden");
+            return;
+        }
+
+        setError("");
+        alert("Formulario enviado correctamente");
+
         // Aquí puedes agregar la lógica para enviar los datos al servidor o realizar otras acciones necesarias
         console.log('Email:', email)
         console.log('Password:', password)
@@ -19,7 +38,7 @@ export default function Register() {
 
   return (
     <>
-        <form style={{width: '400px', margin: '0 auto', padding: '20px', borderRadius: '5px', marginTop: '20px'}}>
+        <form style={{width: '400px', margin: '0 auto', padding: '20px', borderRadius: '5px', marginTop: '20px'}} onSubmit={handleSubmit}>
                 <h1 className="mb-4">Registro</h1>
             <div className="mb-3">
                 <label htmlFor="exampleInputEmail1" className="form-label">Email</label>
