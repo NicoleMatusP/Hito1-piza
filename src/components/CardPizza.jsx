@@ -1,15 +1,15 @@
 import React from 'react'
 
-const CardPizza = (props) => {
+const CardPizza = ({img, name, price, ingredients}) => {
   return (
     <>
       <div className="card h-100 w-100">
-  <img src={props.img} className="card-img-top" alt={props.name} style={{
+  <img src={img} className="card-img-top" alt={name} style={{
     height: "250px",
     objectFit: "cover",
   }}/>
   <div className="card-body">
-    <h6 className="card-title">{props.name}</h6>
+    <h6 className="card-title">{name}</h6>
     <div className='div-ingredientes' style={{
       display: "flex",
       flexDirection: "column",
@@ -21,9 +21,13 @@ const CardPizza = (props) => {
       <p style={{
         margin:"16px 0 12px 0",
       }}>Ingredientes</p>
-      <p style={{
-        textAlign: "center",
-      }}>{props.ingredients.join(", ")}</p>
+      <ul>
+        {ingredients.map((ingredient, index) => (
+          <li key={index} style={{
+            fontSize: "14px",
+          }}>{ingredient}</li>
+        ))}
+      </ul>
     </div>
     <div className='div-inferior' style={{
       display:"flex",
@@ -33,7 +37,7 @@ const CardPizza = (props) => {
     }}>
       <h5 style={{
         margin:"16px 0"
-      }}>Precio : ${props.price.toLocaleString('es-CL')}</h5>
+      }}>Precio : ${price.toLocaleString('es-CL')}</h5>
     <div className="div-buttons" style={{
       display: "flex",
       flexDirection: "row",
