@@ -1,31 +1,43 @@
 import React from 'react'
 import Header from './Header'
 import CardPizza from './CardPizza'
-import Napolitana from '../assets/card-1.webp'
-import Española from '../assets/card-2.jpeg'
-import Pepperoni from '../assets/card-3.jpeg'
-import { pizzas } from '../pizzas'
+import { useState, useEffect } from 'react'
 
 const Home = () => {
+  const [pizzas, setPizzas] = useState([])
+
+  useEffect(() => {
+    const fetchPizzas = async () => {
+      try {
+        const response = await fetch('http://localhost:5000/api/pizzas')
+        const data = await response.json()
+        setPizzas(data)
+      } catch (error) {
+        console.error("Error cargando las pizzas:", error)
+      }
+    }
+
+    fetchPizzas()
+  }, [])
+
   return (
     <div>
       <Header />
       <div className="container my-5">
-      <div className="row g-4">
-        {pizzas.map((pizza) => (
-        <div className="col-12 col-md-6 col-lg-4">
-            <CardPizza 
-              key={pizza.id}
-              name={pizza.name}
-              price={pizza.price}
-              ingredients={pizza.ingredients}
-              img={pizza.img}
-            />
+        <div className="row g-4">
+          {pizzas.map((pizza) => (
+            <div className="col-12 col-md-6 col-lg-4" key={pizza.id}>
+              <CardPizza 
+                name={pizza.name}
+                description={pizza.desc}
+                price={pizza.price}
+                ingredients={pizza.ingredients}
+                img={pizza.img}
+              />
+            </div>
+          ))}
         </div>
-        ))}
       </div>
-      </div>
-      
     </div>
   )
 }
