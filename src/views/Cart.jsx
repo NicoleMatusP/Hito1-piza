@@ -43,6 +43,7 @@ export default function Cart() {
         alignItems: 'center',
         gap: '20px',
         padding: '40px',
+        height: '100vh',
       }}
     >
       <h5>Detalles del pedido:</h5>
