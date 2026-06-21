@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom';
 
 const CardPizza = ({img, name, price, ingredients}) => {
   return (
@@ -45,13 +46,13 @@ const CardPizza = ({img, name, price, ingredients}) => {
       alignItems: "center",
       gap: "20px",
     }}>
-      <button className="btn btn-outline-primary btn-sm" type="submit"
+      <Link to="/Pizza" className="btn btn-outline-primary btn-sm" type="submit"
       style={{
           border: "1px solid #000",
           color: "#000",
           background: "white",
       }}>
-        Ver más 👀</button>
+        Ver más 👀</Link>
       <button className="btn btn-outline-primary btn-sm" type="submit" style={{
         background: "#000000",
         border: "1px solid #000",
