@@ -1,104 +1,77 @@
-import React, { useState } from 'react'
-import { pizzaCart } from '../pizzas'
+import { useContext } from "react";
+import { CartContext } from "../context/CartContext";
 
-export default function Cart() {
-  const [cart, setCart] = useState(pizzaCart)
+const Cart = () => {
+  const { cartItems, incrementCount, decrementCount, total } = useContext(CartContext);
 
-  const totalPrice = cart.reduce(
-    (total, pizza) => total + pizza.price * pizza.count,
-    0
-  )
-
-  const handleIncrease = (id) => {
-    const updatedCart = cart.map((pizza) => {
-      if (pizza.id === id) {
-        return { ...pizza, count: pizza.count + 1 }
-      }
-
-      return pizza
-    })
-
-    setCart(updatedCart)
-  }
-
-  const handleDecrease = (id) => {
-    const updatedCart = cart
-      .map((pizza) => {
-        if (pizza.id === id) {
-          return { ...pizza, count: pizza.count - 1 }
-        }
-
-        return pizza
-      })
-      .filter((pizza) => pizza.count > 0)
-
-    setCart(updatedCart)
+  if (cartItems.length === 0) {
+    return (
+      <div className="container text-center my-5 p-5 border rounded shadow-sm bg-light">
+        <h2 className="mb-3">Tu carrito está vacío 🍕🛒</h2>
+        <p className="text-muted">¡Date un gusto! Ve al menú principal y añade tus pizzas favoritas.</p>
+      </div>
+    );
   }
 
   return (
-    <div
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        gap: '20px',
-        padding: '40px',
-        height: '100vh',
-      }}
-    >
-      <h5>Detalles del pedido:</h5>
-
-      <ul style={{ padding: 0 }}>
-        {cart.map((pizza) => (
-          <li
-            key={pizza.id}
-            style={{
-              display: 'flex',
-              flexDirection: 'row',
-              alignItems: 'center',
-              width: '500px',
-              justifyContent: 'space-between',
-              listStyle: 'none',
-              marginBottom: '16px',
-            }}
-          >
-            <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-              <img
-                src={pizza.img}
-                alt={pizza.name}
-                style={{
-                  width: '60px',
-                  height: '60px',
-                  objectFit: 'cover',
-                }}
-              />
-              <p style={{ margin: 0 }}>{pizza.name}</p>
-            </div>
-
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '10px',
-              }}
+    <div className="container my-5">
+      <h2 className="text-center mb-4 font-weight-bold">Detalles del pedido:</h2>
+      
+      <div className="row justify-content-center">
+        <div className="col-md-8 bg-white p-4 border rounded shadow-sm">
+          
+          {cartItems.map((pizza) => (
+            <div 
+              key={pizza.id} 
+              className="d-flex align-items-center justify-content-between p-3 mb-3 border-bottom"
             >
-              <p style={{ margin: 0 }}>
-                ${pizza.price.toLocaleString('es-CL')}
-              </p>
-
-              <button onClick={() => handleDecrease(pizza.id)}>-</button>
-
-              <p style={{ margin: 0 }}>{pizza.count}</p>
-
-              <button onClick={() => handleIncrease(pizza.id)}>+</button>
+              <div className="d-flex align-items-center" style={{ gap: "15px" }}>
+                <img 
+                  src={pizza.img} 
+                  alt={pizza.name} 
+                  style={{ width: "60px", height: "60px", objectFit: "cover", borderRadius: "8px" }} 
+                />
+                <h5 className="text-capitalize mb-0 font-weight-bold">{pizza.name}</h5>
+              </div>
+              <div className="d-flex align-items-center" style={{ gap: "20px" }}>
+                <span className="text-success font-weight-bold">
+                  ${(pizza.price * pizza.count).toLocaleString()}
+                </span>
+                
+                <div className="d-flex align-items-center border rounded">
+                  <button 
+                    className="btn btn-outline-danger btn-sm border-0 px-3" 
+                    onClick={() => decrementCount(pizza.id)}
+                  >
+                    -
+                  </button>
+                  
+                  <span className="px-3 font-weight-bold">{pizza.count}</span>
+                  
+                  <button 
+                    className="btn btn-outline-primary btn-sm border-0 px-3" 
+                    onClick={() => incrementCount(pizza.id)}
+                  >
+                    +
+                  </button>
+                </div>
+              </div>
             </div>
-          </li>
-        ))}
-      </ul>
+          ))}
 
-      <h5>Total: ${totalPrice.toLocaleString('es-CL')}</h5>
+          <div className="d-flex justify-content-between align-items-center mt-4 pt-3 border-top">
+            <h3 className="font-weight-bold mb-0">
+              Total: <span className="text-dark">${total.toLocaleString()}</span>
+            </h3>
+            <button className="btn btn-dark btn-lg px-4 font-weight-bold shadow-sm">
+              Ir a Pagar 💳
+            </button>
+          </div>
 
-      <button>Pagar</button>
+        </div>
+      </div>
     </div>
-  )
-}
+  );
+};
+
+export default Cart;

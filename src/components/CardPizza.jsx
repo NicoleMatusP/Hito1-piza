@@ -1,7 +1,12 @@
 import React from 'react'
 import { Link } from 'react-router-dom';
+import { useContext } from "react";
+import { CartContext } from "../context/CartContext";
 
 const CardPizza = ({img, name, price, ingredients}) => {
+
+  const { addToCart } = useContext(CartContext);
+
   return (
     <>
       <div className="card h-100 w-100">
@@ -57,7 +62,9 @@ const CardPizza = ({img, name, price, ingredients}) => {
         background: "#000000",
         border: "1px solid #000",
         color: "#ffffff"
-      }}>Añadir 🛒</button>
+      }}
+      onClick={() => addToCart({ img, name, price, ingredients })}
+      >Añadir 🛒</button>
     </div>
     </div>
   </div>
